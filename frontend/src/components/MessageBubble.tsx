@@ -1,7 +1,8 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { ChatMessage } from '../types'
-import { ToolStatusList } from './ToolStatus'
+import { ToolStatusPills } from './ToolStatus'
+import { SourcesPanel } from './SourcesPanel'
 
 export function MessageBubble({ message }: { message: ChatMessage }) {
   if (message.role === 'user') {
@@ -26,7 +27,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
   return (
     <div className="flex justify-start">
       <div className="max-w-[85%]">
-        <ToolStatusList toolCalls={message.toolCalls ?? []} />
+        <ToolStatusPills toolCalls={message.toolCalls ?? []} />
         {message.text ? (
           <div className="prose-chat rounded-2xl rounded-bl-sm bg-white px-4 py-2.5 text-[15px] leading-relaxed text-neutral-800 border border-neutral-100 shadow-sm">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
@@ -38,6 +39,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-300" />
           </div>
         ) : null}
+        {!message.streaming && <SourcesPanel toolCalls={message.toolCalls ?? []} />}
       </div>
     </div>
   )

@@ -1,6 +1,5 @@
 import type { ToolCall } from '../types'
 import { toolLabel } from '../lib/toolLabels'
-import { EvidenceCard } from './EvidenceCard'
 
 function StatusDot({ status }: { status: ToolCall['status'] }) {
   if (status === 'running') {
@@ -12,30 +11,24 @@ function StatusDot({ status }: { status: ToolCall['status'] }) {
   return <span className="h-1.5 w-1.5 rounded-full bg-green-600" />
 }
 
-export function ToolStatusList({ toolCalls }: { toolCalls: ToolCall[] }) {
+/** Live progress indicators shown while the agent is working. Lightweight by
+ * design — the actual evidence (manual pages/diagrams) is deferred to
+ * SourcesPanel until the response finishes, so it reads as citations rather
+ * than a noisy live feed. */
+export function ToolStatusPills({ toolCalls }: { toolCalls: ToolCall[] }) {
   if (toolCalls.length === 0) return null
-  const allEvidence = toolCalls.flatMap((c) => c.evidence)
 
   return (
-    <div className="mb-2 flex flex-col gap-2">
-      <div className="flex flex-wrap gap-1.5">
-        {toolCalls.map((c) => (
-          <div
-            key={c.id}
-            className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs text-neutral-600"
-          >
-            <StatusDot status={c.status} />
-            {toolLabel(c.name, c.status)}
-          </div>
-        ))}
-      </div>
-      {allEvidence.length > 0 && (
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {allEvidence.map((item, i) => (
-            <EvidenceCard key={i} item={item} />
-          ))}
+    <div className="mb-2 flex flex-wrap gap-1.5">
+      {toolCalls.map((c) => (
+        <div
+          key={c.id}
+          className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs text-neutral-600"
+        >
+          <StatusDot status={c.status} />
+          {toolLabel(c.name, c.status)}
         </div>
-      )}
+      ))}
     </div>
   )
 }
