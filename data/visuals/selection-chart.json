@@ -1,0 +1,52 @@
+{
+  "visuals": [
+    {
+      "id": "selection-chart_p001_welder_selection_chart",
+      "doc_id": "selection-chart",
+      "page": 1,
+      "type": "chart",
+      "title": "How to Choose a Welder - Complete Comparison Chart",
+      "description": "A comprehensive selection chart comparing four welding processes (Flux-Cored/FCAW, MIG/GMAW, Stick/SMAW, and TIG/GTAW) across six criteria: skill level, gas requirements, material types, material thickness ranges, typical applications, and weld cleanliness. Includes a sidebar with voltage identification and MIG/flux-cored selection guide. Also features a duty cycle example diagram showing 165A at 30% duty cycle.",
+      "image_path": "data/pages/selection-chart/page_001.png",
+      "highlight_bbox_pct": [
+        0,
+        33,
+        100,
+        73
+      ]
+    },
+    {
+      "id": "selection-chart_p001_duty_cycle_diagram",
+      "doc_id": "selection-chart",
+      "page": 1,
+      "type": "diagram",
+      "title": "Duty Cycle Example",
+      "description": "A circular clock-like diagram illustrating duty cycle concept, showing 165A at 30% duty cycle with segments indicating 3 minutes welding and 7 minutes cooling periods within a 10-minute cycle.",
+      "image_path": "data/pages/selection-chart/page_001.png",
+      "highlight_bbox_pct": [
+        970,
+        665,
+        1040,
+        720
+      ]
+    },
+    {
+      "id": "selection-chart_p001_weld_bead_comparison",
+      "doc_id": "selection-chart",
+      "page": 1,
+      "type": "photo",
+      "title": "Weld Cleanliness Comparison",
+      "description": "A photograph showing four welding beads side by side, demonstrating different levels of spatter and cleanliness from 'More Spatter' to 'Extremely Clean' corresponding to the four welding processes.",
+      "image_path": "data/pages/selection-chart/page_001.png",
+      "highlight_bbox_pct": [
+        220,
+        605,
+        960,
+        635
+      ]
+    }
+  ],
+  "page_summaries": {
+    "1": "Full-page infographic chart titled \"HOW TO CHOOSE A WELDER\" showing a comparison matrix of four welding processes with skill levels, gas requirements, materials, thicknesses, applications, and weld quality characteristics."
+  }
+}

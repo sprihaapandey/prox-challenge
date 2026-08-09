@@ -1,0 +1,42 @@
+{
+  "note": "The OmniPro 220 uses a synergic auto-set LCD control system, not a printed numeric settings table. You select process, then turn the Left/Right knobs to set wire/rod/electrode diameter and material thickness; the machine auto-calculates recommended wire feed speed (or amperage) and voltage, shown live on the LCD (a white mark on the amperage/voltage bars also indicates the recommended setting if adjusted manually). There is no static 'material X + thickness Y -> voltage Z, wire speed W' table printed in the manual to look up instead. Do not report specific numeric WFS/voltage values as manual-backed facts for a given material/thickness -- the manual does not print them; the machine computes them live.",
+  "source_pages": [20, 21, 30, 32],
+  "capabilities": [
+    {
+      "process": "MIG",
+      "wire_type": "Solid Core",
+      "wire_diameters": ["0.025\"", "0.030\"", "0.035\""],
+      "gas": "Shielding gas required",
+      "gas_flow_scfh_range": "20-30",
+      "polarity": "DCEP",
+      "source_page": 7
+    },
+    {
+      "process": "Flux-Cored",
+      "wire_type": "Flux Cored (gasless)",
+      "wire_diameters": ["0.030\"", "0.035\"", "0.045\""],
+      "gas": "No gas required",
+      "polarity": "DCEN",
+      "source_page": 7
+    },
+    {
+      "process": "TIG",
+      "rod_or_electrode": "TIG Rod (sold separately)",
+      "gas": "Shielding gas required (manual example: 100% Argon)",
+      "gas_flow_scfh_range": "10-25",
+      "weldable_materials": ["Mild Steel", "Stainless Steel", "Chrome Moly"],
+      "source_page": 30
+    },
+    {
+      "process": "Stick",
+      "electrode_types_shown_on_lcd": ["60xx", "70XX"],
+      "gas": "No gas required",
+      "polarity": "DCEP",
+      "weldable_materials": ["Mild Steel", "Stainless Steel"],
+      "source_page": 32
+    }
+  ],
+  "wire_feed_speed_range_ipm": "50-500",
+  "wire_spool_capacity": "Up to 12 lb spool",
+  "wire_speed_source_page": 7
+}

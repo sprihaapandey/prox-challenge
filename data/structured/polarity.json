@@ -1,0 +1,42 @@
+[
+  {
+    "process": "MIG",
+    "polarity_name": "DCEP",
+    "polarity_full_name": "Direct Current Electrode Positive",
+    "gun_or_torch_or_electrode_cable": "Wire Feed Power Cable",
+    "gun_or_torch_or_electrode_socket": "Positive",
+    "ground_clamp_socket": "Negative",
+    "applies_to": "Solid core wire welding with shielding gas",
+    "source_page": 14
+  },
+  {
+    "process": "Flux-Cored",
+    "polarity_name": "DCEN",
+    "polarity_full_name": "Direct Current Electrode Negative",
+    "gun_or_torch_or_electrode_cable": "Wire Feed Power Cable",
+    "gun_or_torch_or_electrode_socket": "Negative",
+    "ground_clamp_socket": "Positive",
+    "applies_to": "Flux-Cored (gasless) welding",
+    "source_page": 13
+  },
+  {
+    "process": "TIG",
+    "polarity_name": "",
+    "polarity_full_name": "Direct Current Electrode Negative",
+    "gun_or_torch_or_electrode_cable": "TIG Torch Cable",
+    "gun_or_torch_or_electrode_socket": "Negative",
+    "ground_clamp_socket": "Positive",
+    "applies_to": "TIG welding setup as shown in the manual diagram",
+    "source_page": 24
+  },
+  {
+    "process": "Stick",
+    "polarity_name": "DCEP",
+    "polarity_full_name": "Direct Current Electrode Positive",
+    "gun_or_torch_or_electrode_cable": "Electrode Holder Cable",
+    "gun_or_torch_or_electrode_socket": "Positive",
+    "ground_clamp_socket": "Negative",
+    "applies_to": "Stick welding setup with electrode holder in positive socket and ground clamp in negative socket",
+    "source_page": 27
+  }
+]

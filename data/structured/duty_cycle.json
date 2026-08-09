@@ -1,0 +1,98 @@
+[
+  {
+    "process": "MIG",
+    "input_voltage": 120,
+    "amperage": 100,
+    "duty_cycle_percent": 40,
+    "welding_current_range": "30-140A",
+    "source_page": 7
+  },
+  {
+    "process": "MIG",
+    "input_voltage": 120,
+    "amperage": 75,
+    "duty_cycle_percent": 100,
+    "welding_current_range": "30-140A",
+    "source_page": 7
+  },
+  {
+    "process": "MIG",
+    "input_voltage": 240,
+    "amperage": 200,
+    "duty_cycle_percent": 25,
+    "welding_current_range": "30-220A",
+    "source_page": 7
+  },
+  {
+    "process": "MIG",
+    "input_voltage": 240,
+    "amperage": 115,
+    "duty_cycle_percent": 100,
+    "welding_current_range": "30-220A",
+    "source_page": 7
+  },
+  {
+    "process": "TIG",
+    "input_voltage": 120,
+    "amperage": 125,
+    "duty_cycle_percent": 40,
+    "welding_current_range": "10A-125A",
+    "source_page": 7
+  },
+  {
+    "process": "TIG",
+    "input_voltage": 120,
+    "amperage": 90,
+    "duty_cycle_percent": 100,
+    "welding_current_range": "10A-125A",
+    "source_page": 7
+  },
+  {
+    "process": "TIG",
+    "input_voltage": 240,
+    "amperage": 175,
+    "duty_cycle_percent": 30,
+    "welding_current_range": "10A-175A",
+    "source_page": 7
+  },
+  {
+    "process": "TIG",
+    "input_voltage": 240,
+    "amperage": 105,
+    "duty_cycle_percent": 100,
+    "welding_current_range": "10A-175A",
+    "source_page": 7
+  },
+  {
+    "process": "Stick",
+    "input_voltage": 120,
+    "amperage": 80,
+    "duty_cycle_percent": 40,
+    "welding_current_range": "10A-80A",
+    "source_page": 7
+  },
+  {
+    "process": "Stick",
+    "input_voltage": 120,
+    "amperage": 60,
+    "duty_cycle_percent": 100,
+    "welding_current_range": "10A-80A",
+    "source_page": 7
+  },
+  {
+    "process": "Stick",
+    "input_voltage": 240,
+    "amperage": 175,
+    "duty_cycle_percent": 25,
+    "welding_current_range": "10A-175A",
+    "source_page": 7
+  },
+  {
+    "process": "Stick",
+    "input_voltage": 240,
+    "amperage": 100,
+    "duty_cycle_percent": 100,
+    "welding_current_range": "10A-175A",
+    "source_page": 7
+  }
+]

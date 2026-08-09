@@ -1,0 +1,7 @@
+{
+  "name": "omnipro-agent-backend",
+  "private": true,
+  "dependencies": {
+    "@anthropic-ai/claude-code": "^2.1.226"
+  }
+}

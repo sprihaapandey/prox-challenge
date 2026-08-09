@@ -1,0 +1,188 @@
+{
+  "visuals": [
+    {
+      "id": "quick-start-guide_p001_step1_spool_loading",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "diagram",
+      "title": "Step 1: 2 lb Spool Loading",
+      "description": "Diagram showing the components of 2 lb wire spool loading including wingnut, spacer, spindle, brake pad, welder, and wire spool. Indicates adapter and knob required for 10-12 lb spool.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        3,
+        13,
+        40,
+        39
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_step2_wire_installation",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "diagram",
+      "title": "Step 2: Wire Spool Installation",
+      "description": "Diagram showing the feed mechanism with wire spool, feed guides, and welding wire. Illustrates how to install wire spool and thread wire through both feed guides and clamp it into feed mechanism.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        58,
+        13,
+        97,
+        39
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_warning_injury",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "illustration",
+      "title": "Warning - Serious Injury",
+      "description": "Orange and black warning label instructing users to prevent serious injury by reading manual warnings and instructions before use.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        3,
+        41,
+        19,
+        56
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_step3_nozzle_tip_removal",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "diagram",
+      "title": "Step 3: Nozzle and Tip Removal",
+      "description": "Diagram showing the welding torch with labeled nozzle and contact tip, illustrating how to remove these parts and plug selected cord into welder and wall.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        20,
+        41,
+        80,
+        56
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_step3_wire_feed_button",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "photo",
+      "title": "Step 3: Wire Feed Switch",
+      "description": "Photo showing a hand pressing the cold wire feed switch on the welding gun trigger.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        68,
+        41,
+        97,
+        56
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_warning_fire",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "illustration",
+      "title": "Warning - Fire Prevention",
+      "description": "Orange and black warning label instructing users to prevent fire and serious injury by keeping torch and wire clear of grounded objects while welder is plugged in.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        3,
+        58,
+        19,
+        75
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_step4_tension_adjustment",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "diagram",
+      "title": "Step 4: Wire Feed Tension Adjustment",
+      "description": "Diagram showing the feed mechanism from top view with clockwise rotation arrow, and a welding torch at 2-1/4 inch angle against wood block for setting proper wire tension.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        20,
+        58,
+        97,
+        75
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_step5_nozzle_replacement",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "diagram",
+      "title": "Step 5: Nozzle and Tip Replacement",
+      "description": "Sequential diagram showing unplugging welder from wall outlet and replacing nozzle and tip on the welding torch.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        3,
+        77,
+        97,
+        88
+      ]
+    },
+    {
+      "id": "quick-start-guide_p001_step6_settings_adjustment",
+      "doc_id": "quick-start-guide",
+      "page": 1,
+      "type": "diagram",
+      "title": "Step 6: Settings and Power On",
+      "description": "Sequential diagram showing holding gun clear of workpiece, plugging in welder, turning it on, and setting weld thickness and other settings on the control panel. Shows progression from gun to outlet to welder front to control panel.",
+      "image_path": "data/pages/quick-start-guide/page_001.png",
+      "highlight_bbox_pct": [
+        3,
+        90,
+        97,
+        114
+      ]
+    },
+    {
+      "id": "quick-start-guide_p002_stick_cable_setup_diagram",
+      "doc_id": "quick-start-guide",
+      "page": 2,
+      "type": "diagram",
+      "title": "Stick Cable Setup",
+      "description": "Illustrates the cable connection sequence for stick welding, showing ground clamp connection to negative terminal (1), electrode holder connection to positive terminal (2), and the main welding machine unit (3). Cables and connections are clearly numbered and color-coded.",
+      "image_path": "data/pages/quick-start-guide/page_002.png",
+      "highlight_bbox_pct": [
+        35,
+        12,
+        100,
+        45
+      ]
+    },
+    {
+      "id": "quick-start-guide_p002_mig_cable_setup_diagram",
+      "doc_id": "quick-start-guide",
+      "page": 2,
+      "type": "diagram",
+      "title": "MIG Cable Setup",
+      "description": "Shows the four-point connection setup for MIG welding: ground clamp to negative terminal, MIG gun connection (1), wire feed control cable (2), wire feed power connection (3), and gun trigger cable (4). Depicts the welding machine unit and MIG gun with numbered connection points.",
+      "image_path": "data/pages/quick-start-guide/page_002.png",
+      "highlight_bbox_pct": [
+        35,
+        47,
+        100,
+        78
+      ]
+    },
+    {
+      "id": "quick-start-guide_p002_tig_cable_setup_diagram",
+      "doc_id": "quick-start-guide",
+      "page": 2,
+      "type": "diagram",
+      "title": "TIG Cable Setup",
+      "description": "Demonstrates the five-point TIG welding setup showing ground clamp to positive terminal (1), TIG torch connection to negative terminal (2-3), gas line connection to gas regulator (4), foot pedal connection (5), and the main welding unit. Includes TIG torch, gas regulator, and foot pedal illustrations.",
+      "image_path": "data/pages/quick-start-guide/page_002.png",
+      "highlight_bbox_pct": [
+        35,
+        80,
+        100,
+        113
+      ]
+    }
+  ],
+  "page_summaries": {
+    "1": "A quick start guide page showing six sequential setup steps with diagrams and two warning labels for flux wire welding with the Vulcan OmniPro 220.",
+    "2": "Quick start guide showing three different cable setup diagrams (Stick, MIG/Flux, and TIG) with numbered connection steps for the Vulcan OmniPro 220 welder."
+  }
+}

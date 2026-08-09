@@ -1,0 +1,322 @@
+[
+  {
+    "process": "MIG / Flux-Cored",
+    "source_page": 37,
+    "defect_name": "Wire Weld\u2013Porosity",
+    "visual_description": "Small cavities or holes in the bead.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Incorrect polarity:",
+        "solution": "Check that polarity is set correctly for type of welding."
+      },
+      {
+        "cause": "Insufficient shielding gas (MIG only):",
+        "solution": "Increase flow of gas. Clean nozzle. Maintain proper CTWD."
+      },
+      {
+        "cause": "Incorrect shielding gas (MIG only):",
+        "solution": "Use shielding gas recommended by wire supplier."
+      },
+      {
+        "cause": "Dirty workpiece or welding wire:",
+        "solution": "Clean workpiece down to bare metal. Make certain that wire is clean and free from oil, coatings, and other residues."
+      },
+      {
+        "cause": "Inconsistent travel speed:",
+        "solution": "Maintain steady travel speed."
+      },
+      {
+        "cause": "CTWD too long:",
+        "solution": "Reduce CTWD."
+      }
+    ]
+  },
+  {
+    "process": "MIG / Flux-Cored",
+    "source_page": 37,
+    "defect_name": "Wire Weld\u2013Excessive Spatter",
+    "visual_description": "Fine spatter is normal. Spatter that is grainy and large is a problem.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Dirty workpiece or welding wire:",
+        "solution": "Clean workpiece down to bare metal. Make certain that wire is clean and free from oil, coatings, and other residues."
+      },
+      {
+        "cause": "Incorrect polarity:",
+        "solution": "Check that polarity is set correctly for type of welding."
+      },
+      {
+        "cause": "Insufficient shielding gas (MIG only):",
+        "solution": "Increase flow of gas. Clean nozzle. Maintain proper CTWD."
+      },
+      {
+        "cause": "Wire feeding too fast:",
+        "solution": "Reduce wire feed speed."
+      },
+      {
+        "cause": "CTWD too long:",
+        "solution": "Reduce CTWD."
+      }
+    ]
+  },
+  {
+    "process": "MIG / Flux-Cored",
+    "source_page": 37,
+    "defect_name": "Wire Weld\u2013Crooked/Wavy Bead",
+    "visual_description": "TOP VIEW",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Inaccurate welding:",
+        "solution": "Use two hands or rest hand on steady surface."
+      },
+      {
+        "cause": "Inconsistent travel speed:",
+        "solution": "Maintain steady travel speed."
+      },
+      {
+        "cause": "CTWD too long:",
+        "solution": "Reduce CTWD."
+      }
+    ]
+  },
+  {
+    "process": "MIG / Flux-Cored",
+    "source_page": 37,
+    "defect_name": "Wire Weld\u2013Burn-Through",
+    "visual_description": "Base material melts away, leaving a hole in the weld.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Workpiece overheating:",
+        "solution": "Reduce current and/or wire feed speed."
+      },
+      {
+        "cause": "Travel speed too slow:",
+        "solution": "Increase travel speed and ensure that travel speed is kept steady."
+      },
+      {
+        "cause": "Excessive material at weld:",
+        "solution": "Reduce wire feed speed."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 38,
+    "defect_name": "Current Too Low",
+    "visual_description": "Stick weld with inadequate penetration shown in diagram and photo",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Current too low",
+        "solution": "Increase the current"
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 38,
+    "defect_name": "Current Too High",
+    "visual_description": "Stick weld with excess penetration shown in diagram and photo",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Current too high",
+        "solution": "Decrease the current"
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 38,
+    "defect_name": "Weld Speed Too Fast",
+    "visual_description": "Stick weld with irregular appearance shown in photo",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Weld speed too fast",
+        "solution": "Weld slower"
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 38,
+    "defect_name": "Weld Speed Too Slow",
+    "visual_description": "Stick weld with excessive buildup shown in photo",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Weld speed too slow",
+        "solution": "Weld faster"
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 38,
+    "defect_name": "Arc Length Too Short",
+    "visual_description": "Stick weld with irregular appearance shown in photo",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Arc length too short",
+        "solution": "Increase distance"
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 38,
+    "defect_name": "Arc Length Too Long",
+    "visual_description": "Stick weld with spatter and irregular appearance shown in photo",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Arc length too long",
+        "solution": "Decrease distance"
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 39,
+    "defect_name": "Stick Weld Penetration (Workpiece Heat Control) - EXCESS PENETRATION OR BURN-THROUGH",
+    "visual_description": "Weld droops on top and underneath or falls through entirely, making a hole.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Workpiece overheating:",
+        "solution": "Reduce current."
+      },
+      {
+        "cause": "Welding speed too slow:",
+        "solution": "Increase welding speed and ensure that welding speed is kept steady."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 39,
+    "defect_name": "Stick Weld Penetration (Workpiece Heat Control) - INADEQUATE PENETRATION",
+    "visual_description": "Weld does not contact the joint fully, just on the surface.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Incorrect welding technique:",
+        "solution": "Keep arc on leading edge of weld puddle. Hold torch at proper angles."
+      },
+      {
+        "cause": "Insufficient weld heat:",
+        "solution": "Slow down so fill material has time to melt into the weld location. Increase current."
+      },
+      {
+        "cause": "Workpieces too thick/close:",
+        "solution": "Bevel thick workpieces, allow slight gap, and weld in several passes."
+      },
+      {
+        "cause": "Insufficient weld material:",
+        "solution": "Increase amount of fill material."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 39,
+    "defect_name": "Stick Weld\u2013Weld Not Adhering Properly",
+    "visual_description": "Gaps present between weld and previous bead or between weld and workpiece. See areas below.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Incorrect welding technique:",
+        "solution": "Place stringer bead at correct place in joint. Adjust workpiece position or weld angle to permit proper welding to bottom of piece. Keep arc on leading edge of weld puddle. Hold Electrode and fill material at proper angles."
+      },
+      {
+        "cause": "Insufficient weld heat:",
+        "solution": "Increase current."
+      },
+      {
+        "cause": "Dirty workpiece:",
+        "solution": "Clean workpiece down to bare metal."
+      },
+      {
+        "cause": "Insufficient weld material:",
+        "solution": "Increase amount of fill material."
+      },
+      {
+        "cause": "Distance between workpieces to large:",
+        "solution": "Decrease distance and increase bevel."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 39,
+    "defect_name": "Stick Weld\u2013Bend at Joint",
+    "visual_description": "PROFILE VIEW",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Improper clamping:",
+        "solution": "Clamp workpieces securely. Make tack welds to hold workpieces."
+      },
+      {
+        "cause": "Excessive heat:",
+        "solution": "Weld a small portion and allow to cool before proceeding. Increase weld speed."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 40,
+    "defect_name": "Stick Weld\u2013Porosity",
+    "visual_description": "Small cavities or holes in the bead.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Dirty workpiece or fill material:",
+        "solution": "Clean workpiece down to bare metal. Make certain that fill material and Electrode are clean and free from oil, coatings, and other residues."
+      },
+      {
+        "cause": "Inconsistent welding speed:",
+        "solution": "Maintain steady weld speed."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 40,
+    "defect_name": "Stick Weld\u2013Crooked/Wavy Bead",
+    "visual_description": "TOP VIEW",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Inaccurate welding:",
+        "solution": "Use two hands or rest hand on steady surface."
+      },
+      {
+        "cause": "Inconsistent welding speed:",
+        "solution": "Maintain steady weld speed."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 40,
+    "defect_name": "Stick Weld\u2013Excessive Spatter",
+    "visual_description": "Fine spatter is normal. Spatter that is grainy and large is a problem.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Dirty workpiece or fill material:",
+        "solution": "Clean workpiece down to bare metal. Make certain that fill material and Electrode are clean and free from oil, coatings, and other residues."
+      }
+    ]
+  },
+  {
+    "process": "Stick",
+    "source_page": 40,
+    "defect_name": "Stick Weld\u2013Burn-Through",
+    "visual_description": "Base material melts away, leaving a hole in the weld.",
+    "possible_causes_and_solutions": [
+      {
+        "cause": "Workpiece overheating:",
+        "solution": "Reduce current."
+      },
+      {
+        "cause": "Welding speed too slow:",
+        "solution": "Increase welding speed and ensure that welding speed is kept steady."
+      },
+      {
+        "cause": "Excessive material at weld:",
+        "solution": "Reduce amount of fill material."
+      }
+    ]
+  }
+]

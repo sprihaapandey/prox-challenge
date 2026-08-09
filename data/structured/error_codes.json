@@ -1,0 +1,18 @@
+{
+  "note": "The owner's manual does not contain a table of discrete error codes (no 'E1'/'Er2'-style codes appear anywhere in the manual text). The machine instead shows a generic warning screen on the LCD display for two documented fault conditions, described below. For any other 'won't turn on' / 'display won't light' symptom, use the troubleshooting table instead (data/structured/troubleshooting.json).",
+  "codes": [],
+  "documented_warning_conditions": [
+    {
+      "condition": "Overheat / duty cycle exceeded",
+      "behavior": "A warning screen appears in the LCD Display window and the unit automatically shuts down. It automatically returns to service after cooling off.",
+      "recommended_action": "Leave the Power Switch ON so the internal fan can cool the welder. Use shorter welding periods and longer rest periods afterward. See Duty Cycle guidance.",
+      "source_pages": [19, 23, 29, 43, 44]
+    },
+    {
+      "condition": "Low- or over-voltage protection",
+      "behavior": "Welder does not function when switched on.",
+      "recommended_action": "Check input voltage is within the specified range (see Specifications, page 7). If correct, press the Reset Button on the back of the machine.",
+      "source_pages": [43]
+    }
+  ]
+}
