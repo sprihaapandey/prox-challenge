@@ -124,4 +124,5 @@ export interface ChatMessage {
   images?: string[] // image urls attached by the user
   toolCalls?: ToolCall[]
   streaming?: boolean
+  error?: string
 }

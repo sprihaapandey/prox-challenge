@@ -3,12 +3,12 @@ import { toolLabel } from '../lib/toolLabels'
 
 function StatusDot({ status }: { status: ToolCall['status'] }) {
   if (status === 'running') {
-    return <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
+    return <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ember shadow-[0_0_6px_var(--color-ember-glow)]" />
   }
   if (status === 'error') {
-    return <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+    return <span className="h-1.5 w-1.5 rounded-full bg-rose" />
   }
-  return <span className="h-1.5 w-1.5 rounded-full bg-green-600" />
+  return <span className="h-1.5 w-1.5 rounded-full bg-mint" />
 }
 
 /** Live progress indicators shown while the agent is working. Lightweight by
@@ -23,7 +23,7 @@ export function ToolStatusPills({ toolCalls }: { toolCalls: ToolCall[] }) {
       {toolCalls.map((c) => (
         <div
           key={c.id}
-          className="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs text-neutral-600"
+          className="flex items-center gap-1.5 rounded-full border border-obsidian-border bg-obsidian-panel px-2.5 py-1 text-xs text-ink-muted"
         >
           <StatusDot status={c.status} />
           {toolLabel(c.name, c.status)}

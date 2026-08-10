@@ -8,7 +8,7 @@ function FactCard({ item }: { item: Extract<EvidenceItem, { type: 'fact' }> }) {
   const wrap = (children: React.ReactNode) => (
     <button
       onClick={() => page && openPage(doc_id, page)}
-      className="w-full rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 text-left text-sm transition hover:border-orange-300"
+      className="w-full rounded-lg border border-ember/25 bg-ember-soft px-3 py-2 text-left text-sm transition hover:border-ember/50"
     >
       {children}
     </button>
@@ -17,11 +17,11 @@ function FactCard({ item }: { item: Extract<EvidenceItem, { type: 'fact' }> }) {
   if (fact_kind === 'duty_cycle' && data.found) {
     return wrap(
       <>
-        <div className="font-semibold text-orange-900">
+        <div className="font-semibold text-ink">
           {data.process} · {data.input_voltage}V · {data.amperage}A
         </div>
-        <div className="text-orange-800">{data.duty_cycle_percent}% duty cycle</div>
-        <div className="mt-0.5 text-xs text-orange-700">Range: {data.welding_current_range} · Page {page}</div>
+        <div className="text-ember">{data.duty_cycle_percent}% duty cycle</div>
+        <div className="mt-0.5 text-xs text-ink-muted">Range: {data.welding_current_range} · Page {page}</div>
       </>,
     )
   }
@@ -29,14 +29,14 @@ function FactCard({ item }: { item: Extract<EvidenceItem, { type: 'fact' }> }) {
   if (fact_kind === 'polarity' && data.found) {
     return wrap(
       <>
-        <div className="font-semibold text-orange-900">
+        <div className="font-semibold text-ink">
           {data.process} · {data.polarity_name || data.polarity_full_name}
         </div>
-        <div className="text-orange-800">
+        <div className="text-ink-muted">
           {data.gun_or_torch_or_electrode_cable} → {data.gun_or_torch_or_electrode_socket} socket
         </div>
-        <div className="text-orange-800">Ground clamp → {data.ground_clamp_socket} socket</div>
-        <div className="mt-0.5 text-xs text-orange-700">Page {page}</div>
+        <div className="text-ink-muted">Ground clamp → {data.ground_clamp_socket} socket</div>
+        <div className="mt-0.5 text-xs text-ink-faint">Page {page}</div>
       </>,
     )
   }
@@ -44,11 +44,11 @@ function FactCard({ item }: { item: Extract<EvidenceItem, { type: 'fact' }> }) {
   if (fact_kind === 'part' && data) {
     return wrap(
       <>
-        <div className="font-semibold text-orange-900">Part #{data.part_number}</div>
-        <div className="text-orange-800">
+        <div className="font-semibold text-ink">Part #{data.part_number}</div>
+        <div className="text-ink-muted">
           {data.description} (qty {data.qty})
         </div>
-        <div className="mt-0.5 text-xs text-orange-700">Page {page}</div>
+        <div className="mt-0.5 text-xs text-ink-faint">Page {page}</div>
       </>,
     )
   }
@@ -66,13 +66,19 @@ export function EvidenceCard({ item }: { item: EvidenceItem }) {
     return (
       <button
         onClick={() => openPage(item.doc_id, item.page, bbox)}
-        className="block w-56 shrink-0 overflow-hidden rounded-lg border border-neutral-200 bg-white text-left shadow-sm transition hover:shadow-md"
+        className="group block w-56 shrink-0 overflow-hidden rounded-xl border border-obsidian-border bg-obsidian-panel text-left transition hover:border-obsidian-border-strong hover:shadow-[0_0_0_1px_var(--color-ember-glow)]"
       >
-        <img src={item.image_url} alt={title} className="h-32 w-full object-cover object-top bg-neutral-50" />
+        <div className="overflow-hidden bg-obsidian-elevated">
+          <img
+            src={item.image_url}
+            alt={title}
+            className="h-32 w-full object-cover object-top transition duration-300 group-hover:scale-105"
+          />
+        </div>
         <div className="px-2.5 py-2">
-          <div className="truncate text-xs font-semibold text-neutral-800">{title}</div>
-          {caption && <div className="line-clamp-2 text-[11px] text-neutral-500">{caption}</div>}
-          <div className="mt-1 text-[11px] font-medium text-orange-600">Manual — Page {item.page}</div>
+          <div className="truncate text-xs font-semibold text-ink">{title}</div>
+          {caption && <div className="line-clamp-2 text-[11px] text-ink-faint">{caption}</div>}
+          <div className="mt-1 text-[11px] font-medium text-ember">Manual — Page {item.page}</div>
         </div>
       </button>
     )
@@ -86,13 +92,13 @@ export function EvidenceCard({ item }: { item: EvidenceItem }) {
     return (
       <button
         onClick={() => openPage(item.doc_id, item.page)}
-        className="w-56 shrink-0 rounded-lg border border-neutral-200 bg-white px-2.5 py-2 text-left text-xs shadow-sm transition hover:shadow-md"
+        className="w-56 shrink-0 rounded-xl border border-obsidian-border bg-obsidian-panel px-2.5 py-2 text-left text-xs transition hover:border-obsidian-border-strong"
       >
-        <div className="font-semibold text-neutral-700">
+        <div className="font-semibold text-ink-muted">
           Page {item.page}
           {item.section ? ` · ${item.section}` : ''}
         </div>
-        <div className="line-clamp-3 text-neutral-500">{item.snippet}</div>
+        <div className="line-clamp-3 text-ink-faint">{item.snippet}</div>
       </button>
     )
   }

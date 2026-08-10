@@ -21,6 +21,8 @@ from dotenv import load_dotenv
 
 load_dotenv(REPO_ROOT / ".env")
 
+from sqlalchemy import text  # noqa: E402
+
 from db.embeddings import embed_texts  # noqa: E402
 from db.models import (  # noqa: E402
     Base,
@@ -142,6 +144,8 @@ def load_parts(session) -> int:
 
 def main() -> None:
     engine = get_engine()
+    with engine.begin() as conn:
+        conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
     print("Dropping and recreating tables...")
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)

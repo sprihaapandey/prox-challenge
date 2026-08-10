@@ -1,0 +1,95 @@
+[
+  {
+    "id": "sf-01",
+    "category": "simple_factual",
+    "question": "What's the duty cycle for MIG welding at 200A on 240V?",
+    "answer": "The duty cycle for MIG welding at 200A on 240V input is **25%** (page 7).\n\nThis means at 200A output, the machine can weld continuously for 2.5 minutes out of every 10-minute period before needing to cool down. The OmniPro 220's MIG welding current range on 240V is 30-220A.",
+    "tool_calls": [
+      {
+        "name": "lookup_duty_cycle",
+        "input": {
+          "process": "MIG",
+          "input_voltage": 240,
+          "amperage": 200
+        }
+      }
+    ],
+    "error": null,
+    "elapsed_s": 13.5,
+    "checks": {
+      "expected_tool_called": true,
+      "expected_substrings_present": true,
+      "expected_source_page_cited": true
+    },
+    "notes": ""
+  },
+  {
+    "id": "sf-02",
+    "category": "simple_factual",
+    "question": "What's the duty cycle for TIG at 125A on 120V?",
+    "answer": "**40% duty cycle** for TIG at 125A on 120V input (page 7).\n\nThis means the welder can operate for 4 minutes out of every 10-minute period at that amperage before needing to cool down. Note that 125A is the maximum TIG output on 120V, so you're at the upper limit of the machine's capability on that input voltage.",
+    "tool_calls": [
+      {
+        "name": "lookup_duty_cycle",
+        "input": {
+          "process": "TIG",
+          "input_voltage": 120,
+          "amperage": 125
+        }
+      }
+    ],
+    "error": null,
+    "elapsed_s": 14.5,
+    "checks": {
+      "expected_tool_called": true,
+      "expected_substrings_present": true,
+      "expected_source_page_cited": true
+    },
+    "notes": ""
+  },
+  {
+    "id": "sf-03",
+    "category": "simple_factual",
+    "question": "What's the duty cycle for Stick welding at 100A on 240V?",
+    "answer": "**100% duty cycle** at 100A Stick welding on 240V input.\n\nThat means you can weld continuously at that amperage without needing to stop for cooling (page 7). The OmniPro 220 can handle 10A-175A for Stick welding on 240V power.",
+    "tool_calls": [
+      {
+        "name": "lookup_duty_cycle",
+        "input": {
+          "process": "Stick",
+          "input_voltage": 240,
+          "amperage": 100
+        }
+      }
+    ],
+    "error": null,
+    "elapsed_s": 10.5,
+    "checks": {
+      "expected_tool_called": true,
+      "expected_substrings_present": true,
+      "expected_source_page_cited": true
+    },
+    "notes": ""
+  },
+  {
+    "id": "sf-04",
+    "category": "simple_factual",
+    "question": "What wire diameters does this welder support for solid MIG wire?",
+    "answer": "The OmniPro 220 supports **three wire diameters** for solid MIG wire:\n\n- **0.025\"** (0.6 mm)\n- **0.030\"** (0.8 mm)  \n- **0.035\"** (0.9 mm)\n\nThese require shielding gas at 20-30 SCFH flow rate, and the machine runs DCEP (reverse) polarity for solid wire (page 7).\n\nThe machine uses a synergic auto-set system, so once you've installed the wire and selected the diameter on the LCD control panel, it will automatically calculate and recommend the voltage and wire feed speed based on the material thickness you dial in.",
+    "tool_calls": [
+      {
+        "name": "lookup_settings",
+        "input": {
+          "process": "MIG"
+        }
+      }
+    ],
+    "error": null,
+    "elapsed_s": 9.7,
+    "checks": {
+      "expected_substrings_present": true,
+      "expected_source_page_cited": true
+    },
+    "notes": ""
+  }
+]

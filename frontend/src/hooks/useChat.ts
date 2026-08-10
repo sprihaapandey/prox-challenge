@@ -54,14 +54,14 @@ export function useChat(conversationId: string) {
               ),
             }))
           } else if (event.type === 'error') {
-            updateLastAssistant((m) => ({ ...m, text: m.text + `\n\n_Error: ${event.message}_` }))
+            updateLastAssistant((m) => ({ ...m, error: event.message, streaming: false }))
           } else if (event.type === 'done') {
             updateLastAssistant((m) => ({ ...m, streaming: false }))
           }
         }
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
-          updateLastAssistant((m) => ({ ...m, text: m.text + `\n\n_Connection error: ${(err as Error).message}_`, streaming: false }))
+          updateLastAssistant((m) => ({ ...m, error: `Connection error: ${(err as Error).message}`, streaming: false }))
         }
       } finally {
         setIsStreaming(false)
