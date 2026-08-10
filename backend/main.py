@@ -74,17 +74,18 @@ def _sse(event: str, data: dict[str, Any]) -> str:
 
 
 async def _stream_chat(req: ChatRequest):
-    convo = _get_conversation(req.conversation_id)
-    pending_tool_names: dict[str, str] = {}
-    emitted_artifact_types: set[str] = set()
-    db = new_session()
-
-    image_abs_paths = None
-    image_urls = [to_media_url(p) for p in req.image_paths] if req.image_paths else []
-    if req.image_paths:
-        image_abs_paths = [str(REPO_ROOT / p) for p in req.image_paths]
-
+    db = None
     try:
+        convo = _get_conversation(req.conversation_id)
+        pending_tool_names: dict[str, str] = {}
+        emitted_artifact_types: set[str] = set()
+        db = new_session()
+
+        image_abs_paths = None
+        image_urls = [to_media_url(p) for p in req.image_paths] if req.image_paths else []
+        if req.image_paths:
+            image_abs_paths = [str(REPO_ROOT / p) for p in req.image_paths]
+
         async for event in convo.send(req.message, image_paths=image_abs_paths):
             etype = event["type"]
 
@@ -131,7 +132,8 @@ async def _stream_chat(req: ChatRequest):
     except Exception as exc:  # noqa: BLE001
         yield _sse("error", {"message": str(exc)})
     finally:
-        db.close()
+        if db is not None:
+            db.close()
 
 
 @app.post("/api/chat", dependencies=[Depends(require_access_code)])
