@@ -1,7 +1,7 @@
 export type ChatEvent =
   | { type: 'text_delta'; text: string }
   | { type: 'tool_call'; id: string; name: string; input: Record<string, unknown> }
-  | { type: 'tool_result'; tool_use_id: string; name: string; is_error: boolean; evidence: unknown[] }
+  | { type: 'tool_result'; tool_use_id: string; name: string; is_error: boolean; evidence: unknown[]; artifact: unknown | null }
   | { type: 'done'; result: string | null; cost_usd: number | null }
   | { type: 'error'; message: string }
 

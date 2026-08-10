@@ -20,7 +20,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from agent.agent import Conversation
-from api.evidence import extract_evidence
+from api.evidence import build_artifact, extract_evidence
+from db.session import new_session
 
 app = FastAPI(title="Vulcan OmniPro 220 Assistant")
 
@@ -58,6 +59,8 @@ def _sse(event: str, data: dict[str, Any]) -> str:
 async def _stream_chat(req: ChatRequest):
     convo = _get_conversation(req.conversation_id)
     pending_tool_names: dict[str, str] = {}
+    emitted_artifact_types: set[str] = set()
+    db = new_session()
 
     image_abs_paths = None
     if req.image_paths:
@@ -77,6 +80,7 @@ async def _stream_chat(req: ChatRequest):
             elif etype == "tool_result":
                 tool_name = pending_tool_names.get(event["tool_use_id"], "")
                 evidence: list[dict] = []
+                artifact: dict | None = None
                 if not event["is_error"]:
                     for block in event["content"] if isinstance(event["content"], list) else []:
                         text = block.get("text") if isinstance(block, dict) else None
@@ -87,9 +91,20 @@ async def _stream_chat(req: ChatRequest):
                         except (json.JSONDecodeError, TypeError):
                             continue
                         evidence.extend(extract_evidence(tool_name, parsed))
+                        if artifact is None:
+                            candidate = build_artifact(tool_name, parsed, db)
+                            if candidate and candidate["artifact_type"] not in emitted_artifact_types:
+                                artifact = candidate
+                                emitted_artifact_types.add(candidate["artifact_type"])
                 yield _sse(
                     "tool_result",
-                    {"tool_use_id": event["tool_use_id"], "name": tool_name, "is_error": event["is_error"], "evidence": evidence},
+                    {
+                        "tool_use_id": event["tool_use_id"],
+                        "name": tool_name,
+                        "is_error": event["is_error"],
+                        "evidence": evidence,
+                        "artifact": artifact,
+                    },
                 )
 
             elif etype == "done":
@@ -97,6 +112,8 @@ async def _stream_chat(req: ChatRequest):
 
     except Exception as exc:  # noqa: BLE001
         yield _sse("error", {"message": str(exc)})
+    finally:
+        db.close()
 
 
 @app.post("/api/chat")

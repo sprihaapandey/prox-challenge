@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 import { streamChat } from '../lib/api'
-import type { ChatMessage, EvidenceItem, ToolCall } from '../types'
+import type { Artifact, ChatMessage, EvidenceItem, ToolCall } from '../types'
 
 function newId(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36)
@@ -44,7 +44,12 @@ export function useChat(conversationId: string) {
               ...m,
               toolCalls: (m.toolCalls ?? []).map((c) =>
                 c.id === event.tool_use_id
-                  ? { ...c, status: event.is_error ? 'error' : 'done', evidence: event.evidence as EvidenceItem[] }
+                  ? {
+                      ...c,
+                      status: event.is_error ? 'error' : 'done',
+                      evidence: event.evidence as EvidenceItem[],
+                      artifact: event.artifact as Artifact | null,
+                    }
                   : c,
               ),
             }))

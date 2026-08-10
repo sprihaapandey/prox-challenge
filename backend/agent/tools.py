@@ -85,6 +85,7 @@ def _search_visuals(session, query: str, doc_id: str | None):
             "title": r.title,
             "description": r.description,
             "image_path": r.image_path,
+            "highlight_bbox_pct": r.highlight_bbox_pct,
             "relevance": round(r.relevance, 3),
         }
         for r in results

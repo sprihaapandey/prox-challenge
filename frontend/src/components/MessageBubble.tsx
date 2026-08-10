@@ -3,6 +3,7 @@ import remarkGfm from 'remark-gfm'
 import type { ChatMessage } from '../types'
 import { ToolStatusPills } from './ToolStatus'
 import { SourcesPanel } from './SourcesPanel'
+import { ArtifactRenderer } from './artifacts/ArtifactRenderer'
 
 export function MessageBubble({ message }: { message: ChatMessage }) {
   if (message.role === 'user') {
@@ -39,7 +40,18 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-300" />
           </div>
         ) : null}
-        {!message.streaming && <SourcesPanel toolCalls={message.toolCalls ?? []} />}
+        {!message.streaming && (
+          <>
+            {(message.toolCalls ?? [])
+              .filter((c) => c.artifact)
+              .map((c) => (
+                <div key={c.id} className="mt-3">
+                  <ArtifactRenderer artifact={c.artifact!} />
+                </div>
+              ))}
+            <SourcesPanel toolCalls={message.toolCalls ?? []} />
+          </>
+        )}
       </div>
     </div>
   )

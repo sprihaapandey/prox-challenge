@@ -3,8 +3,10 @@ import { useChat } from './hooks/useChat'
 import { MessageBubble } from './components/MessageBubble'
 import { Composer } from './components/Composer'
 import { QuickPrompts } from './components/QuickPrompts'
+import { ManualViewerModal } from './components/ManualViewerModal'
+import { ManualViewerProvider } from './context/ManualViewerContext'
 
-function App() {
+function AppShell() {
   const [conversationId] = useState(() => crypto.randomUUID())
   const { messages, isStreaming, sendMessage } = useChat(conversationId)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -49,6 +51,15 @@ function App() {
         <Composer disabled={isStreaming} onSend={sendMessage} />
       </div>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <ManualViewerProvider>
+      <AppShell />
+      <ManualViewerModal />
+    </ManualViewerProvider>
   )
 }
 

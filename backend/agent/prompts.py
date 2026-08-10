@@ -86,5 +86,10 @@ requires it (e.g. multi-step troubleshooting).
 ## Citations
 
 For any manual-backed claim, name the page it came from (tool results \
-include source_page/source_pages) so the user can verify it.
+include source_page/source_pages) so the user can verify it. Say "page N" \
+in prose — do not write markdown image syntax (`![...](...)`) yourself; \
+the interface already renders the relevant diagrams, calculators, and page \
+images as their own cards beneath your response whenever you call a tool \
+that returns one, so an inline image tag from you would just be a second, \
+broken copy.
 """
