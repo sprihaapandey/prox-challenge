@@ -88,7 +88,7 @@ export function Composer({ disabled, onSend }: Props) {
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled || uploading}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-obsidian-border text-ink-muted transition hover:border-obsidian-border-strong hover:text-ink disabled:opacity-40"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-obsidian-border text-ink-muted transition hover:border-obsidian-border-strong hover:text-ink active:scale-90 disabled:opacity-40 disabled:active:scale-100"
           title="Attach a photo"
           aria-label="Attach a photo"
         >
@@ -106,7 +106,7 @@ export function Composer({ disabled, onSend }: Props) {
           <button
             onClick={toggleVoice}
             disabled={disabled}
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition disabled:opacity-40 ${
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition active:scale-90 disabled:opacity-40 disabled:active:scale-100 ${
               isListening
                 ? 'border-ember/50 bg-ember-soft text-ember shadow-[0_0_16px_var(--color-ember-glow)]'
                 : 'border-obsidian-border text-ink-muted hover:border-obsidian-border-strong hover:text-ink'
@@ -133,7 +133,7 @@ export function Composer({ disabled, onSend }: Props) {
         <button
           onClick={submit}
           disabled={disabled || (!text.trim() && !isListening && images.length === 0)}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-ember to-ember-dim text-white shadow-[0_0_16px_var(--color-ember-glow)] transition disabled:opacity-30 disabled:shadow-none"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-ember to-ember-dim text-white shadow-[0_0_16px_var(--color-ember-glow)] transition active:scale-90 disabled:opacity-30 disabled:shadow-none disabled:active:scale-100"
           aria-label="Send"
         >
           ↑

@@ -6,23 +6,46 @@ import { Composer } from './components/Composer'
 import { QuickPrompts } from './components/QuickPrompts'
 import { ManualViewerModal } from './components/ManualViewerModal'
 import { ManualViewerProvider } from './context/ManualViewerContext'
+import { VisualsPanel, EmptyVisualsPanel } from './components/VisualsPanel'
+
+const SIDE_PANEL_WIDTH = 'w-[400px]'
 
 function AppShell() {
   const [conversationId] = useState(() => crypto.randomUUID())
   const { messages, isStreaming, sendMessage } = useChat(conversationId)
   const speech = useSpeechSynthesis()
   const scrollRef = useRef<HTMLDivElement>(null)
+  const lastMessageRef = useRef<HTMLDivElement>(null)
+  const wasLastStreamingRef = useRef(false)
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+    const lastMessage = messages[messages.length - 1]
+    const isLastStreaming = lastMessage?.streaming ?? false
+
+    if (isLastStreaming) {
+      // Text actively growing — follow the bottom as it streams.
+      scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+    } else if (wasLastStreamingRef.current) {
+      // Just finished: on narrow viewports the artifact/sources are about to
+      // append inline below the text. Reveal the message from its own top
+      // instead of snapping to the container's absolute bottom, which
+      // overshoots past the artifact once it's taller than the viewport.
+      // (On wide viewports this doesn't matter — the side panel is a
+      // separate scroll container and never affects this one's height.)
+      lastMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    wasLastStreamingRef.current = isLastStreaming
   }, [messages])
 
   const isEmpty = messages.length === 0
+  const latestAssistant = [...messages].reverse().find((m) => m.role === 'assistant')
+  const sidePanelToolCalls = latestAssistant?.toolCalls ?? []
 
   return (
     <div className="flex h-dvh flex-col bg-obsidian">
       <header className="relative flex shrink-0 items-center gap-3 border-b border-obsidian-border bg-obsidian-panel/80 px-4 py-3 backdrop-blur sm:px-5">
         <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-ember to-ember-dim text-base font-bold text-white shadow-[0_0_20px_var(--color-ember-glow)]">
+          {isStreaming && <span className="absolute -inset-1 -z-10 animate-ping rounded-xl bg-ember/40" />}
           V
         </div>
         <div className="min-w-0">
@@ -46,17 +69,33 @@ function AppShell() {
           </div>
         </div>
       ) : (
-        <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-5 sm:px-4">
-          <div className="mx-auto flex max-w-3xl flex-col gap-5">
-            {messages.map((m) => (
-              <MessageBubble key={m.id} message={m} speech={speech} />
-            ))}
+        <div className="flex flex-1 overflow-hidden">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-5 sm:px-4">
+            <div className="mx-auto flex max-w-3xl flex-col gap-5">
+              {messages.map((m, i) => (
+                <div key={m.id} ref={i === messages.length - 1 ? lastMessageRef : undefined}>
+                  <MessageBubble message={m} speech={speech} />
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* Persistent workspace for the latest turn's diagrams/calculators/
+           * sources — a separate scroll container from the chat column, so
+           * populating it never reflows or buries the text being read.
+           * Hidden below xl; MessageBubble renders the same content inline
+           * there instead (see its xl:hidden block). */}
+          <aside className={`hidden shrink-0 overflow-y-auto border-l border-obsidian-border p-4 xl:block ${SIDE_PANEL_WIDTH}`}>
+            {sidePanelToolCalls.length > 0 ? <VisualsPanel toolCalls={sidePanelToolCalls} /> : <EmptyVisualsPanel />}
+          </aside>
         </div>
       )}
 
-      <div className="mx-auto w-full max-w-3xl shrink-0">
-        <Composer disabled={isStreaming} onSend={sendMessage} />
+      <div className="flex shrink-0">
+        <div className="mx-auto w-full max-w-3xl flex-1">
+          <Composer disabled={isStreaming} onSend={sendMessage} />
+        </div>
+        {!isEmpty && <div className={`hidden shrink-0 border-l border-obsidian-border xl:block ${SIDE_PANEL_WIDTH}`} />}
       </div>
     </div>
   )

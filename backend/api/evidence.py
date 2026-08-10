@@ -175,9 +175,18 @@ def _polarity_row(p: Polarity) -> dict[str, Any]:
     }
 
 
-def build_artifact(tool_name: str, result: dict[str, Any], session: Session) -> dict[str, Any] | None:
+def build_artifact(
+    tool_name: str,
+    result: dict[str, Any],
+    session: Session,
+    image_urls: list[str] | None = None,
+) -> dict[str, Any] | None:
     """Returns a full artifact payload for the frontend's deterministic renderers,
-    or None if this tool call doesn't warrant one (e.g. a found=false lookup)."""
+    or None if this tool call doesn't warrant one (e.g. a found=false lookup).
+
+    image_urls (the /media URLs for this turn's uploaded photos, if any) is
+    only used by annotate_image, which needs to tell the frontend which
+    original image to draw its markers on top of."""
     name = tool_name.rsplit("__", 1)[-1]
 
     if name == "lookup_duty_cycle":
@@ -230,6 +239,19 @@ def build_artifact(tool_name: str, result: dict[str, Any], session: Session) -> 
                 "match_type": result.get("match_type"),
                 "table_matches": table_matches,
                 "diagnosis_matches": diagnosis_matches,
+            },
+        }
+
+    if name == "annotate_image":
+        idx = result.get("image_index", 0)
+        if not image_urls or idx >= len(image_urls) or not result.get("points"):
+            return None
+        return {
+            "artifact_type": "image_annotation",
+            "title": "Annotated Photo",
+            "data": {
+                "image_url": image_urls[idx],
+                "points": result["points"],
             },
         }
 

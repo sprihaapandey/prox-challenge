@@ -14,7 +14,7 @@ export function QuickPrompts({ onPick }: { onPick: (prompt: string) => void }) {
           key={p.text}
           onClick={() => onPick(p.text)}
           style={{ animationDelay: `${i * 60}ms` }}
-          className="animate-fade-in-up rounded-full border border-obsidian-border bg-obsidian-panel px-3.5 py-2 text-sm text-ink-muted opacity-0 shadow-sm transition hover:border-ember/40 hover:bg-obsidian-elevated hover:text-ink"
+          className="animate-fade-in-up rounded-full border border-obsidian-border bg-obsidian-panel px-3.5 py-2 text-sm text-ink-muted opacity-0 shadow-sm transition hover:scale-[1.03] hover:border-ember/40 hover:bg-obsidian-elevated hover:text-ink active:scale-95"
         >
           <span className="mr-1.5">{p.icon}</span>
           {p.text}

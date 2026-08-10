@@ -3,8 +3,7 @@ import remarkGfm from 'remark-gfm'
 import type { ChatMessage } from '../types'
 import type { useSpeechSynthesis } from '../hooks/useSpeechSynthesis'
 import { ToolStatusPills } from './ToolStatus'
-import { SourcesPanel } from './SourcesPanel'
-import { ArtifactRenderer } from './artifacts/ArtifactRenderer'
+import { VisualsPanel } from './VisualsPanel'
 
 type Speech = ReturnType<typeof useSpeechSynthesis>
 
@@ -68,12 +67,6 @@ export function MessageBubble({ message, speech }: { message: ChatMessage; speec
     )
   }
 
-  // Text streams and settles first; the artifact appends below only once the
-  // message is fully done. Inserting it above already-visible text (or
-  // popping it in mid-stream) shoves settled content around as it renders —
-  // appending below after everything has stopped moving doesn't.
-  const artifactCalls = (message.toolCalls ?? []).filter((c) => c.artifact)
-
   return (
     <div className="flex justify-start animate-fade-in-up">
       <div className="w-full max-w-[92%] sm:max-w-[85%]">
@@ -89,14 +82,16 @@ export function MessageBubble({ message, speech }: { message: ChatMessage; speec
         {message.error && <div className="mt-2"><ErrorBanner message={message.error} /></div>}
         {!message.streaming && message.text && <SpeakButton message={message} speech={speech} />}
 
-        {!message.streaming && artifactCalls.length > 0 && (
-          <div className="mt-3 flex flex-col gap-3">
-            {artifactCalls.map((c) => (
-              <ArtifactRenderer key={c.id} artifact={c.artifact!} />
-            ))}
+        {/* Desktop shows artifacts/sources in the persistent side panel
+         * (App.tsx) instead — this inline copy only renders on narrow
+         * viewports where there's no room for a side column. Still gated on
+         * !streaming there since, inline, popping it in mid-stream would
+         * reflow the text above it exactly like before. */}
+        {!message.streaming && (
+          <div className="mt-3 animate-fade-in-up xl:hidden">
+            <VisualsPanel toolCalls={message.toolCalls ?? []} />
           </div>
         )}
-        {!message.streaming && <SourcesPanel toolCalls={message.toolCalls ?? []} />}
       </div>
     </div>
   )

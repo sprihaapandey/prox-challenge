@@ -1,0 +1,46 @@
+# Explicit project name: without it, Compose defaults to the directory name
+# ("prox-challenge"), which this file would then share with docker-compose.yml
+# (the local dev Postgres). Same project + same service name "postgres" makes
+# Compose treat them as the same service slot and RECREATE (replace) whichever
+# container is already running under that name — verified the hard way. The
+# underlying named volume survives recreation so no data was lost, but the
+# container swap itself is unwanted. An isolated project name prevents it.
+name: omnipro-prod
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: omnipro
+      POSTGRES_PASSWORD: omnipro
+      POSTGRES_DB: omnipro
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omnipro"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      DATABASE_URL: postgresql+psycopg://omnipro:omnipro@postgres:5432/omnipro
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      ACCESS_CODE: ${ACCESS_CODE:-}
+    volumes:
+      - uploads:/app/data/uploads
+
+volumes:
+  pgdata:
+  uploads:

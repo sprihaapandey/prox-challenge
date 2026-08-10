@@ -334,6 +334,48 @@ async def get_manual_page(args: dict) -> dict:
     return _json_result({"found": True, **result})
 
 
+@tool(
+    "annotate_image",
+    "Report specific points of interest on the user's uploaded photo, so the interface draws numbered "
+    "markers directly on it (e.g. pointing at a socket, a cable connection, a weld defect) instead of "
+    "you just describing locations in words. Call this whenever the user attaches a photo and you can "
+    "identify specific components or issues in it. The image has a red reference grid overlaid, lines "
+    "every 10% of width/height labeled along the top and left edges -- read x_pct/y_pct off that grid "
+    "rather than guessing; it is a reading aid only, don't mention the grid itself to the user. Stay "
+    "appropriately uncertain in each note per the Image analysis rule -- 'appears to be' not 'this is'.",
+    {
+        "type": "object",
+        "properties": {
+            "image_index": {
+                "type": "integer",
+                "description": "which of the user's uploaded images this annotates; 0 for the first/only one",
+            },
+            "points": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "label": {"type": "string", "description": "short label, e.g. 'Ground clamp'"},
+                        "note": {"type": "string", "description": "one hedged sentence on what you observe here"},
+                        "x_pct": {"type": "number", "description": "0-100, read from the grid"},
+                        "y_pct": {"type": "number", "description": "0-100, read from the grid"},
+                        "status": {
+                            "type": "string",
+                            "enum": ["ok", "warning", "info"],
+                            "description": "ok = looks correct per the manual, warning = potential issue, info = neutral observation",
+                        },
+                    },
+                    "required": ["label", "note", "x_pct", "y_pct", "status"],
+                },
+            },
+        },
+        "required": ["image_index", "points"],
+    },
+)
+async def annotate_image(args: dict) -> dict:
+    return _json_result({"image_index": args.get("image_index", 0), "points": args["points"]})
+
+
 ALL_TOOLS = [
     search_manual,
     search_visuals_tool,
@@ -343,6 +385,7 @@ ALL_TOOLS = [
     troubleshoot,
     lookup_part,
     get_manual_page,
+    annotate_image,
 ]
 
 TOOL_NAMES = [f"mcp__omnipro__{t.name}" for t in ALL_TOOLS]

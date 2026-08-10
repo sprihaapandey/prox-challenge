@@ -5,19 +5,42 @@ export type ChatEvent =
   | { type: 'done'; result: string | null; cost_usd: number | null }
   | { type: 'error'; message: string }
 
+// Only relevant when the backend is deployed with ACCESS_CODE set (see
+// README "Deploying" section) — a no-op locally, where it's never set.
+const ACCESS_CODE_KEY = 'omnipro_access_code'
+
+function accessCodeHeaders(): Record<string, string> {
+  const code = localStorage.getItem(ACCESS_CODE_KEY)
+  return code ? { 'X-Access-Code': code } : {}
+}
+
+function promptForAccessCode(): string | null {
+  const code = window.prompt('This demo requires an access code:')
+  if (code) localStorage.setItem(ACCESS_CODE_KEY, code)
+  return code
+}
+
 export async function* streamChat(
   conversationId: string,
   message: string,
   imagePaths: string[] | undefined,
   signal: AbortSignal,
 ): AsyncGenerator<ChatEvent> {
-  const res = await fetch('/api/chat', {
+  let res = await fetch('/api/chat', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...accessCodeHeaders() },
     body: JSON.stringify({ conversation_id: conversationId, message, image_paths: imagePaths }),
     signal,
   })
-  if (!res.body) throw new Error('No response body')
+  if (res.status === 401 && promptForAccessCode()) {
+    res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...accessCodeHeaders() },
+      body: JSON.stringify({ conversation_id: conversationId, message, image_paths: imagePaths }),
+      signal,
+    })
+  }
+  if (!res.ok || !res.body) throw new Error(res.status === 401 ? 'Incorrect access code' : 'No response body')
 
   const reader = res.body.getReader()
   const decoder = new TextDecoder()
@@ -48,7 +71,10 @@ export async function* streamChat(
 export async function uploadImage(file: File): Promise<{ path: string; url: string }> {
   const form = new FormData()
   form.append('file', file)
-  const res = await fetch('/api/upload', { method: 'POST', body: form })
+  let res = await fetch('/api/upload', { method: 'POST', body: form, headers: accessCodeHeaders() })
+  if (res.status === 401 && promptForAccessCode()) {
+    res = await fetch('/api/upload', { method: 'POST', body: form, headers: accessCodeHeaders() })
+  }
   if (!res.ok) throw new Error('Upload failed')
   return res.json()
 }

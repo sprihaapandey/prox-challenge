@@ -8,7 +8,7 @@ function FactCard({ item }: { item: Extract<EvidenceItem, { type: 'fact' }> }) {
   const wrap = (children: React.ReactNode) => (
     <button
       onClick={() => page && openPage(doc_id, page)}
-      className="w-full rounded-lg border border-ember/25 bg-ember-soft px-3 py-2 text-left text-sm transition hover:border-ember/50"
+      className="w-full rounded-lg border border-ember/25 bg-ember-soft px-3 py-2 text-left text-sm transition hover:border-ember/50 active:scale-[0.98]"
     >
       {children}
     </button>
@@ -66,7 +66,7 @@ export function EvidenceCard({ item }: { item: EvidenceItem }) {
     return (
       <button
         onClick={() => openPage(item.doc_id, item.page, bbox)}
-        className="group block w-56 shrink-0 overflow-hidden rounded-xl border border-obsidian-border bg-obsidian-panel text-left transition hover:border-obsidian-border-strong hover:shadow-[0_0_0_1px_var(--color-ember-glow)]"
+        className="group block w-56 shrink-0 overflow-hidden rounded-xl border border-obsidian-border bg-obsidian-panel text-left transition hover:-translate-y-0.5 hover:border-obsidian-border-strong hover:shadow-[0_4px_20px_rgba(0,0,0,0.4),0_0_0_1px_var(--color-ember-glow)] active:translate-y-0 active:scale-[0.98]"
       >
         <div className="overflow-hidden bg-obsidian-elevated">
           <img
@@ -92,7 +92,7 @@ export function EvidenceCard({ item }: { item: EvidenceItem }) {
     return (
       <button
         onClick={() => openPage(item.doc_id, item.page)}
-        className="w-56 shrink-0 rounded-xl border border-obsidian-border bg-obsidian-panel px-2.5 py-2 text-left text-xs transition hover:border-obsidian-border-strong"
+        className="w-56 shrink-0 rounded-xl border border-obsidian-border bg-obsidian-panel px-2.5 py-2 text-left text-xs transition hover:-translate-y-0.5 hover:border-obsidian-border-strong active:translate-y-0 active:scale-[0.98]"
       >
         <div className="font-semibold text-ink-muted">
           Page {item.page}

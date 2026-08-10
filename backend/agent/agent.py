@@ -26,6 +26,10 @@ from claude_agent_sdk import (
     UserMessage,
 )
 
+from PIL import Image
+
+from lib.imaging import encode_png, with_grid_overlay
+
 from .prompts import SYSTEM_PROMPT
 from .tools import TOOL_NAMES, build_mcp_server
 
@@ -93,12 +97,13 @@ async def _stream_prompt(message: str, image_paths: list[str]):
 
 
 def _read_image_b64(path: str) -> dict[str, str]:
-    import base64
-    import mimetypes
-
-    media_type = mimetypes.guess_type(path)[0] or "image/png"
-    data = base64.standard_b64encode(Path(path).read_bytes()).decode("utf-8")
-    return {"media_type": media_type, "data": data}
+    """Overlays a percentage grid before sending to Claude — measurably improves
+    coordinate accuracy for annotate_image (see lib/imaging.py). The file on
+    disk (what the frontend displays) is left untouched; only what Claude
+    sees is gridded."""
+    image = Image.open(path)
+    gridded = with_grid_overlay(image)
+    return {"media_type": "image/png", "data": encode_png(gridded)}
 
 
 def _normalize(msg: Any) -> list[dict[str, Any]]:

@@ -86,6 +86,14 @@ export interface WeldDiagnosisMatch {
   relevance?: number
 }
 
+export interface ImageAnnotationPoint {
+  label: string
+  note: string
+  x_pct: number
+  y_pct: number
+  status: 'ok' | 'warning' | 'info'
+}
+
 export type Artifact =
   | {
       artifact_type: 'duty_cycle_calculator'
@@ -106,6 +114,11 @@ export type Artifact =
       artifact_type: 'troubleshooting_flowchart'
       title: string
       data: { match_type: 'exact' | 'semantic'; table_matches: TroubleshootingTableMatch[]; diagnosis_matches: WeldDiagnosisMatch[] }
+    }
+  | {
+      artifact_type: 'image_annotation'
+      title: string
+      data: { image_url: string; points: ImageAnnotationPoint[] }
     }
 
 export interface ToolCall {

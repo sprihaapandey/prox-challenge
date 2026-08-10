@@ -3,6 +3,7 @@ import { PolarityDiagram } from './PolarityDiagram'
 import { DutyCycleCalculator } from './DutyCycleCalculator'
 import { TroubleshootingFlowchart } from './TroubleshootingFlowchart'
 import { SettingsConfigurator } from './SettingsConfigurator'
+import { ImageAnnotation } from './ImageAnnotation'
 
 export function ArtifactRenderer({ artifact }: { artifact: Artifact }) {
   switch (artifact.artifact_type) {
@@ -26,6 +27,8 @@ export function ArtifactRenderer({ artifact }: { artifact: Artifact }) {
           highlight={artifact.data.highlight}
         />
       )
+    case 'image_annotation':
+      return <ImageAnnotation imageUrl={artifact.data.image_url} points={artifact.data.points} />
     default:
       return null
   }

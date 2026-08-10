@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import uuid
 from pathlib import Path
@@ -13,21 +14,25 @@ from dotenv import load_dotenv
 
 load_dotenv(REPO_ROOT / ".env")
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from agent.agent import Conversation
-from api.evidence import build_artifact, extract_evidence
+from api.evidence import build_artifact, extract_evidence, to_media_url
 from db.session import new_session
 
 app = FastAPI(title="Vulcan OmniPro 220 Assistant")
 
+# CORS_ORIGINS lets a production deploy add its real domain; local dev origins
+# always stay allowed since the frontend and API can run as separate
+# processes (npm run dev + uvicorn) as well as bundled into one container.
+_extra_origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", *_extra_origins],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -36,6 +41,18 @@ DATA_DIR = REPO_ROOT / "data"
 UPLOADS_DIR = DATA_DIR / "uploads"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/media", StaticFiles(directory=str(DATA_DIR)), name="media")
+
+# Optional, opt-in guard for public deploys: unset locally (no-op), set
+# ACCESS_CODE to require a matching X-Access-Code header on the two
+# API-cost-incurring endpoints, so a shared demo URL can't be scraped/abused
+# by strangers running up your Anthropic bill.
+ACCESS_CODE = os.environ.get("ACCESS_CODE", "").strip()
+
+
+def require_access_code(x_access_code: str | None = Header(default=None)) -> None:
+    if ACCESS_CODE and x_access_code != ACCESS_CODE:
+        raise HTTPException(status_code=401, detail="Missing or invalid access code")
+
 
 _conversations: dict[str, Conversation] = {}
 
@@ -63,6 +80,7 @@ async def _stream_chat(req: ChatRequest):
     db = new_session()
 
     image_abs_paths = None
+    image_urls = [to_media_url(p) for p in req.image_paths] if req.image_paths else []
     if req.image_paths:
         image_abs_paths = [str(REPO_ROOT / p) for p in req.image_paths]
 
@@ -92,7 +110,7 @@ async def _stream_chat(req: ChatRequest):
                             continue
                         evidence.extend(extract_evidence(tool_name, parsed))
                         if artifact is None:
-                            candidate = build_artifact(tool_name, parsed, db)
+                            candidate = build_artifact(tool_name, parsed, db, image_urls=image_urls)
                             if candidate and candidate["artifact_type"] not in emitted_artifact_types:
                                 artifact = candidate
                                 emitted_artifact_types.add(candidate["artifact_type"])
@@ -116,12 +134,12 @@ async def _stream_chat(req: ChatRequest):
         db.close()
 
 
-@app.post("/api/chat")
+@app.post("/api/chat", dependencies=[Depends(require_access_code)])
 async def chat(req: ChatRequest):
     return StreamingResponse(_stream_chat(req), media_type="text/event-stream")
 
 
-@app.post("/api/upload")
+@app.post("/api/upload", dependencies=[Depends(require_access_code)])
 async def upload(file: UploadFile = File(...)):
     ext = Path(file.filename or "upload").suffix or ".png"
     name = f"{uuid.uuid4().hex}{ext}"
@@ -141,3 +159,11 @@ async def end_conversation(conversation_id: str):
 @app.get("/api/health")
 async def health():
     return {"ok": True}
+
+
+# In production the Docker image builds the frontend and copies it here;
+# in local dev this directory doesn't exist (the frontend runs separately
+# via `npm run dev`), so this mount is skipped and nothing changes locally.
+_frontend_dist = REPO_ROOT / "frontend" / "dist"
+if _frontend_dist.is_dir():
+    app.mount("/", StaticFiles(directory=str(_frontend_dist), html=True), name="frontend")
