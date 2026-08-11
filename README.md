@@ -4,16 +4,16 @@ A multimodal technical support agent for the Vulcan OmniPro 220 welding machine,
 
 <img src="product.webp" alt="Vulcan OmniPro 220" width="360" />
 
-The original challenge brief is preserved in [CHALLENGE.md](CHALLENGE.md).
-
 **Live demo:** https://omnipro-385920925770.us-central1.run.app (no signup, no API key needed on your end — go ask it something)
+
+The live demo uses my personal API key, and my current resources for API costs may be limited. An alternative is to follow the quickstart section to clone the repo and run it locally.
 
 ---
 
 ## Quick start
 
 ```bash
-git clone <your-fork>
+git clone https://github.com/sprihaapandey/prox-challenge.git
 cd prox-challenge
 cp .env.example .env
 # edit .env and set ANTHROPIC_API_KEY
@@ -25,10 +25,10 @@ docker compose up -d postgres
 cd backend
 python3.12 -m venv .venv
 .venv/bin/pip install -r requirements.txt
-npm install          # installs the Claude Code CLI the Agent SDK drives — see "Why a CLI dependency?" below
+npm install          
 cd ..
 
-# 3. Load the pre-extracted knowledge base into Postgres (fast, local, no extra API cost)
+# 3. Load the pre-extracted knowledge base into Postgres (fast, local, no extra API cost, < 1 min>)
 backend/.venv/bin/python scripts/load_knowledge_base.py
 
 # 4. Start the backend
