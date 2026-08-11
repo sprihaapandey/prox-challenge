@@ -4,7 +4,7 @@ A multimodal technical support agent for the Vulcan OmniPro 220 welding machine,
 
 <img src="product.webp" alt="Vulcan OmniPro 220" width="360" />
 
-<video src="https://drive.google.com/file/d/1uYSZKHNJ7L11SZNHdXhkhTurXD-gCB_J/view?usp=sharing)" width="320" height="240" controls></video>
+<video src="https://drive.google.com/file/d/1uYSZKHNJ7L11SZNHdXhkhTurXD-gCB_J/view?usp=sharing" width="320" height="240" controls></video>
 
 **Live demo:** https://omnipro-385920925770.us-central1.run.app (no signup, no API key needed on your end — go ask it something)
 
