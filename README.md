@@ -160,7 +160,7 @@ backend/.venv/bin/python scripts/evaluate.py
 One container serves both the API and the built frontend as static files (`backend/Dockerfile` builds the frontend, then bundles it with the Python+Node backend — the Agent SDK's CLI subprocess needs Node either way, see above), plus a separate Postgres container:
 
 ```bash
-cp .env.example .env   # set ANTHROPIC_API_KEY; optionally CORS_ORIGINS and ACCESS_CODE (below)
+cp .env.example .env   # set ANTHROPIC_API_KEY; optionally CORS_ORIGINS (below)
 docker compose -f docker-compose.prod.yml up -d --build
 
 # first deploy only — load the pre-extracted knowledge base into the fresh prod DB
@@ -168,8 +168,6 @@ docker compose -f docker-compose.prod.yml exec app python scripts/load_knowledge
 ```
 
 Verified working end-to-end this way (build, container start, health check, frontend serving, and a real chat round-trip) before writing this down.
-
-**`ACCESS_CODE`** (optional): if set, `/api/chat` and `/api/upload` require a matching `X-Access-Code` header; the frontend prompts for it once and remembers it in localStorage. Worth turning on for any publicly-reachable deploy — every chat turn spends real Anthropic API credit (several tool-calling round trips per question), so a shared demo URL without this is an open invitation to run up the bill. Unset locally; local dev is unaffected.
 
 **`CORS_ORIGINS`**: comma-separated extra allowed origins, needed if the frontend is ever served from a different origin than the API (not the case with the one-container setup above, but kept configurable).
 

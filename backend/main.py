@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv(REPO_ROOT / ".env")
 
-from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -41,18 +41,6 @@ DATA_DIR = REPO_ROOT / "data"
 UPLOADS_DIR = DATA_DIR / "uploads"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/media", StaticFiles(directory=str(DATA_DIR)), name="media")
-
-# Optional, opt-in guard for public deploys: unset locally (no-op), set
-# ACCESS_CODE to require a matching X-Access-Code header on the two
-# API-cost-incurring endpoints, so a shared demo URL can't be scraped/abused
-# by strangers running up your Anthropic bill.
-ACCESS_CODE = os.environ.get("ACCESS_CODE", "").strip()
-
-
-def require_access_code(x_access_code: str | None = Header(default=None)) -> None:
-    if ACCESS_CODE and x_access_code != ACCESS_CODE:
-        raise HTTPException(status_code=401, detail="Missing or invalid access code")
-
 
 _conversations: dict[str, Conversation] = {}
 
@@ -136,12 +124,12 @@ async def _stream_chat(req: ChatRequest):
             db.close()
 
 
-@app.post("/api/chat", dependencies=[Depends(require_access_code)])
+@app.post("/api/chat")
 async def chat(req: ChatRequest):
     return StreamingResponse(_stream_chat(req), media_type="text/event-stream")
 
 
-@app.post("/api/upload", dependencies=[Depends(require_access_code)])
+@app.post("/api/upload")
 async def upload(file: UploadFile = File(...)):
     ext = Path(file.filename or "upload").suffix or ".png"
     name = f"{uuid.uuid4().hex}{ext}"

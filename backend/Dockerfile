@@ -31,6 +31,12 @@ COPY backend/ backend/
 COPY data/ data/
 COPY --from=frontend-build /app/frontend/dist frontend/dist
 
+# The Claude Code CLI refuses to run with --dangerously-skip-permissions as
+# root/sudo (a safety guard) — Cloud Run and most container platforms run as
+# root by default, so a dedicated non-root user is required, not optional.
+RUN useradd --create-home --shell /bin/bash appuser && chown -R appuser:appuser /app
+USER appuser
+
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
 

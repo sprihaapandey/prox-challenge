@@ -37,7 +37,6 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       DATABASE_URL: postgresql+psycopg://omnipro:omnipro@postgres:5432/omnipro
       CORS_ORIGINS: ${CORS_ORIGINS:-}
-      ACCESS_CODE: ${ACCESS_CODE:-}
     volumes:
       - uploads:/app/data/uploads
 
