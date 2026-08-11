@@ -1,10 +1,12 @@
 # Vulcan OmniPro 220 — AI Welding Assistant
 
-A multimodal technical support agent for the Vulcan OmniPro 220 welding machine, built on the Claude Agent SDK. It answers deep technical questions grounded in the actual owner's manual, surfaces the right diagram instead of describing it in prose, and generates interactive artifacts (a duty-cycle calculator, a polarity diagram, a troubleshooting checklist, a settings explorer) backed by real extracted manual data — never invented numbers.
+A multimodal technical support agent for the Vulcan OmniPro 220 welding machine, built on the Claude Agent SDK. It answers deep technical questions grounded in the actual owner's manual, surfaces the right diagram instead of describing it in prose, and generates interactive artifacts (a duty-cycle calculator, a polarity diagram, a troubleshooting flowchart, a settings explorer) backed by real extracted manual data — never invented numbers. Upload a photo of your own machine and it draws numbered markers directly on it instead of describing locations in words; voice input and read-aloud both work through the browser, no extra API key required.
 
 <img src="product.webp" alt="Vulcan OmniPro 220" width="360" />
 
 The original challenge brief is preserved in [CHALLENGE.md](CHALLENGE.md).
+
+**Live demo:** https://omnipro-385920925770.us-central1.run.app (no signup, no API key needed on your end — go ask it something)
 
 ---
 
@@ -63,6 +65,7 @@ React chat UI  ──(SSE)──►  FastAPI /api/chat
      │ lookup_duty_cycle    lookup_polarity             │
      │ lookup_settings      troubleshoot                │
      │ lookup_part          get_manual_page             │
+     │ annotate_image (marks up a user-uploaded photo)  │
      └────────────────────────────────────────────────┘
                                   │
         ┌─────────────────────────┴─────────────────────────┐
@@ -80,9 +83,11 @@ React chat UI  ──(SSE)──►  FastAPI /api/chat
                   separate "generate artifact" tool)
                                   │
                                   ▼
-        Streamed response + Source citations + Interactive
-        artifact (calculator/diagram/flowchart/configurator)
-        + in-app Manual Viewer (zoom, page nav)
+   Streamed text response  +  a persistent side panel (desktop) that
+   independently renders source citations and the interactive artifact
+   (calculator/diagram/flowchart/configurator/annotated photo) as soon as
+   each is ready — never buried by or burying the other — plus an in-app
+   Manual Viewer (zoom, page nav)
 ```
 
 ### The three knowledge layers
@@ -90,30 +95,6 @@ React chat UI  ──(SSE)──►  FastAPI /api/chat
 1. **Raw source** (`data/pages/*.png`) — every PDF page rendered to an image at 2x scale. This is the ground truth a user can always fall back to verify a claim against, via the in-app Manual Viewer.
 2. **Semantic knowledge** (`data/chunks/*.json`, `data/visuals/*.json` → Postgres `chunks`/`visuals` tables) — page text split into clean two-column-aware chunks, and a Claude-vision-generated catalog of every diagram/chart/photo per page. Both are embedded locally (`sentence-transformers/all-MiniLM-L6-v2`) for pgvector cosine similarity search.
 3. **Structured facts** (`data/structured/*.json` → Postgres `duty_cycle`/`polarity`/`troubleshooting`/`weld_diagnosis`/`parts` tables) — deterministic records for duty cycle, polarity/socket assignments, troubleshooting tables, weld-diagnosis cards, and the parts list. Tools query these directly for exact answers instead of asking the LLM to re-derive a fact from prose every time.
-
----
-
-## Key design decisions
-
-**The Claude Agent SDK is literally the Claude Code CLI, and that has real consequences.** `claude-agent-sdk` drives the same CLI binary that powers Claude Code, as a subprocess. Tested unrestricted, it pulled the full coding-agent tool surface (Bash, Edit, Write, memory paths, skills, sub-agents) into a customer-facing welding assistant, cost roughly 10x more per turn (~$0.09 vs ~$0.01 for a comparable direct API call), and added a hidden secondary model call I couldn't fully suppress. Fixed by setting `tools=[]` and `setting_sources=[]` (strips it to just the 8 domain tools registered via an in-process MCP server) and using `ClaudeSDKClient` for a **persistent session per conversation** rather than the one-shot `query()` helper, so the CLI subprocess is spawned once per conversation instead of once per turn.
-
-**No separate "generate artifact" tool.** An artifact (duty-cycle calculator, polarity diagram, troubleshooting checklist, settings explorer) is deterministically derived server-side from the same fact-lookup tool call the agent already had to make to answer the question (see `backend/api/evidence.py::build_artifact`). This guarantees every artifact is backed by a real, necessary tool call — the model can't forget to "generate" one, and it can't show one backed by invented data.
-
-**Full manual pages, not auto-cropped diagrams.** I tried having Claude vision return bounding boxes to crop individual diagrams out of each page — even with a percentage-grid overlay as a grounding aid, the crops were unreliable enough to clip labels off diagrams, and once returned wildly out-of-range coordinates. Rather than ship inconsistent crops, every catalogued visual points at its full (always-correct) page image; the bounding box is kept only as a soft, validated highlight hint in the Manual Viewer that degrades gracefully to "no highlight" if the coordinates look implausible.
-
-**Two "the manual doesn't have this" findings are baked into the data, not guessed at query time.** (1) This machine uses a synergic auto-set LCD — there is no printed "material + thickness → voltage + wire speed" table, confirmed by inspecting the relevant pages directly. (2) There's no discrete error-code table (no "E1"/"Er-2" style codes anywhere in 48 pages — confirmed by grep across the full extracted text), only two generic LCD warning conditions. Both are recorded explicitly in `data/structured/settings.json` and `error_codes.json` with source pages, so the agent states the real behavior instead of inventing numbers or a fake code table.
-
-**Structured extraction was hand-verified against page images, not blindly LLM-scanned.** For each category (duty cycle, polarity, troubleshooting, weld diagnosis, parts), I first visually inspected the actual rendered page to identify the correct source page(s) and expected values, *then* ran targeted Claude-vision extraction against those specific pages with forced JSON schemas, and cross-checked the output against what I'd already read by eye. `tests/test_source_page_accuracy.py` encodes those verified page numbers as a regression test.
-
-**Local embeddings.** Anthropic has no first-party embeddings endpoint, and the brief requires the whole app to run on one `ANTHROPIC_API_KEY`. `sentence-transformers` runs entirely on-device, so semantic search doesn't need a second API key or external service.
-
-**Citations render after the response finishes, not mid-stream.** Evidence/source cards originally appeared the instant each tool call resolved, which felt noisy while the model was still composing its answer. They now render as a "Sources" section once streaming completes, alongside a lightweight live status pill ("Checking duty cycle chart…") during generation.
-
-**Polarity genuinely differs by process** — this directly answers the brief's example question ("which socket does the ground clamp go in?"). Ground clamp: **Negative** for MIG, **Positive** for Flux-Cored, **Positive** for TIG, **Negative** for Stick. Each verified against its own cable-connection diagram page (14, 13, 24, 27 respectively) — see `tests/test_polarity.py`.
-
-### Why a CLI dependency in a Python backend?
-
-`claude-agent-sdk` requires the Claude Code CLI on disk; `npm install` in `backend/` installs it as a local (not global) dependency so it stays scoped to this project rather than requiring a global install.
 
 ---
 
@@ -129,6 +110,7 @@ React chat UI  ──(SSE)──►  FastAPI /api/chat
 | `troubleshoot` | Exact symptom match against the Problem/Cause/Solution tables and weld-diagnosis cards, semantic fallback if nothing matches exactly |
 | `lookup_part` | Part number or description → parts-list entry |
 | `get_manual_page` | Fetch a specific page's image + metadata to back up a citation |
+| `annotate_image` | Places numbered, labeled markers on a user-uploaded photo (coordinates read off a grid overlay) — how the agent points at *your* welder, not the manual's |
 
 Safety and hallucination-prevention rules (never invent a spec/connection/polarity/setting, distinguish manual fact from general welding knowledge, cite real page numbers only, stay hedged on image analysis, defer to a qualified technician for internal repairs) are encoded in `backend/agent/prompts.py`.
 
@@ -199,10 +181,12 @@ backend/
   main.py         FastAPI app — SSE chat endpoint, upload, static media
 
 frontend/src/
-  components/     chat UI, evidence/source cards, manual viewer modal
-  components/artifacts/  the 4 interactive artifact renderers
+  components/     chat UI, evidence/source cards, manual viewer modal,
+                  VisualsPanel (the persistent side-panel workspace)
+  components/artifacts/  the 5 interactive artifact renderers
   context/        manual viewer state
-  hooks/useChat.ts        SSE client + message state machine
+  hooks/useChat.ts             SSE client + message state machine
+  hooks/useSpeechRecognition.ts, useSpeechSynthesis.ts   voice in/out
 
 data/
   pages/          rendered manual page images (served at /media/pages/...)
@@ -219,5 +203,6 @@ tests/            unit tests, integration tests, eval dataset + results
 ## Known limitations
 
 - **Per-turn latency (~5-25s)** is dominated by the Claude Agent SDK's CLI subprocess overhead, not model inference — a direct Messages API tool-use loop would be faster and cheaper, but the brief specifically requires the Claude Agent SDK. The persistent-session fix keeps this to one-time-per-conversation rather than one-time-per-turn.
-- **Auto-crop of individual diagrams was deliberately dropped** (see above) in favor of always-correct full-page images with a best-effort highlight overlay.
-- **No voice / camera mode** — out of scope given the time budget; the plan explicitly treats these as stretch goals after the core product is solid.
+- **Auto-crop of individual diagrams was deliberately dropped** in favor of always-correct full-page images with a best-effort highlight overlay.
+- **No live camera mode** — photo upload + annotation is implemented (see `annotate_image` above); pointing a live camera feed at the machine for real-time analysis was out of scope given the time budget.
+- **No access control on the live demo** — it was deliberately removed (see git history) in favor of zero-friction access for reviewers; every chat turn spends real Anthropic API credit, so this is a known, accepted tradeoff for a temporary demo link rather than a production posture.
